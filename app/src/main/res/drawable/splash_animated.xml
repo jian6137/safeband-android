@@ -1,0 +1,307 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+
+        <vector xmlns:tools="http://schemas.android.com/tools"
+            android:width="288dp"
+            android:height="288dp"
+            android:viewportWidth="288"
+            android:viewportHeight="288"
+            tools:ignore="VectorRaster">
+
+            <clip-path android:pathData="M144,144m-90,0a90,90 0,1 1,180 0a90,90 0,1 1,-180 0" />
+
+            <path
+                android:name="circleBase"
+                android:fillAlpha="0.50"
+                android:fillColor="#eceef3"
+                android:pathData="M144,54A90,90 0,0 1,234 144A90,90 0,0 1,144 234A90,90 0,0 1,54 144A90,90 0,0 1,144 54z" />
+
+            <group
+                android:name="background"
+                android:pivotX="144"
+                android:pivotY="144"
+                android:scaleX="0"
+                android:scaleY="0">
+
+                <path
+                    android:name="backgroundPath"
+                    android:fillAlpha="0"
+                    android:fillColor="#116398"
+                    android:pathData="M144,144m-90,0a90,90 0,1 1,180 0a90,90 0,1 1,-180 0" />
+
+            </group>
+
+
+            <group
+                android:name="strapLock"
+                android:pivotX="144"
+                android:pivotY="144"
+                android:scaleX="0"
+                android:scaleY="1">
+                <path
+                    android:fillColor="#00000000"
+                    android:pathData="M116.85,89.71H171.15M116.85,198.29H171.15"
+                    android:strokeWidth="8"
+                    android:strokeColor="#CEE5FF"
+                    android:strokeLineCap="round" />
+            </group>
+
+            <group
+                android:name="wristbandBody"
+                android:pivotX="144"
+                android:pivotY="144"
+                android:scaleX="1"
+                android:scaleY="0">
+
+                <path
+                    android:fillColor="#ffffff"
+                    android:pathData="M126.85,99.65L161.15,99.65A10,10 0,0 1,171.15 109.65L171.15,178.35A10,10 0,0 1,161.15 188.35L126.85,188.35A10,10 0,0 1,116.85 178.35L116.85,109.65A10,10 0,0 1,126.85 99.65z" />
+
+            </group>
+
+            <group
+                android:name="foreground"
+                android:pivotX="144"
+                android:pivotY="144"
+                android:rotation="-70.37"
+                android:scaleX="0.3"
+                android:scaleY="0.3">
+                <path
+                    android:name="foregroundPath1"
+                    android:fillAlpha="1"
+                    android:fillColor="#0E4A73"
+                    android:pathData="M144,160.75C138.75,160.75 134.49,156.5 134.49,151.24C134.49,150.88 134.35,150.54 134.09,150.28C133.84,150.03 133.49,149.89 133.13,149.89C132.77,149.89 132.43,150.03 132.17,150.28C131.92,150.54 131.77,150.88 131.77,151.24C131.77,153.66 132.49,156.03 133.84,158.04C135.18,160.05 137.09,161.61 139.32,162.54C141.56,163.46 144.01,163.71 146.38,163.23C148.76,162.76 150.93,161.6 152.64,159.89C154.35,158.18 155.52,156 155.99,153.63C156.46,151.26 156.22,148.8 155.29,146.57C154.37,144.33 152.8,142.42 150.79,141.08C148.78,139.74 146.42,139.02 144,139.02C143.64,139.02 143.29,139.16 143.04,139.42C142.79,139.67 142.64,140.02 142.64,140.38C142.64,140.74 142.79,141.08 143.04,141.34C143.29,141.59 143.64,141.74 144,141.74C146.52,141.74 148.94,142.74 150.72,144.52C152.51,146.3 153.51,148.72 153.51,151.24C153.51,153.77 152.51,156.18 150.72,157.97C148.94,159.75 146.52,160.75 144,160.75Z"
+                    android:strokeWidth="3"
+                    android:strokeColor="#0E4A73" />
+                <path
+                    android:name="foregroundPath2"
+                    android:fillAlpha="1"
+                    android:fillColor="#0E4A73"
+                    android:pathData="M144,127.25C149.25,127.25 153.51,131.5 153.51,136.76C153.51,137.12 153.65,137.46 153.91,137.72C154.16,137.97 154.51,138.11 154.87,138.11C155.23,138.11 155.57,137.97 155.83,137.72C156.08,137.46 156.23,137.12 156.23,136.76C156.23,134.34 155.51,131.97 154.16,129.96C152.82,127.95 150.91,126.39 148.68,125.46C146.44,124.54 143.99,124.29 141.62,124.77C139.24,125.24 137.07,126.4 135.36,128.11C133.65,129.82 132.48,132 132.01,134.37C131.54,136.74 131.78,139.2 132.71,141.43C133.63,143.67 135.2,145.58 137.21,146.92C139.22,148.26 141.58,148.98 144,148.98C144.36,148.98 144.71,148.84 144.96,148.58C145.21,148.33 145.36,147.98 145.36,147.62C145.36,147.26 145.21,146.92 144.96,146.66C144.71,146.41 144.36,146.26 144,146.26C141.48,146.26 139.06,145.26 137.28,143.48C135.49,141.7 134.49,139.28 134.49,136.76C134.49,134.23 135.49,131.82 137.28,130.03C139.06,128.25 141.48,127.25 144,127.25Z"
+                    android:strokeWidth="3"
+                    android:strokeColor="#0E4A73" />
+            </group>
+
+
+            <group
+                android:name="topStrap"
+                android:pivotX="0"
+                android:pivotY="0"
+                android:scaleX="1"
+                android:scaleY="0">
+                <path
+                    android:fillColor="#CEE5FF"
+                    android:pathData="M112.98,54H175.14V89.58C175.14,91.79 173.35,93.58 171.14,93.58H116.98C114.77,93.58 112.98,91.79 112.98,89.58V54Z" />
+
+            </group>
+
+            <group
+                android:name="bottomStrap"
+                android:pivotX="288"
+                android:pivotY="288"
+                android:scaleX="1"
+                android:scaleY="0">
+
+                <path
+                    android:fillColor="#CEE5FF"
+                    android:pathData="M175.08,234H112.92V198.42C112.92,196.21 114.71,194.42 116.92,194.42H171.08C173.29,194.42 175.08,196.21 175.08,198.42V234Z" />
+
+            </group>
+
+
+        </vector>
+
+    </aapt:attr>
+
+    <target android:name="background">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleX"
+                    android:valueFrom="0.75"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:valueFrom="0.75"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="wristbandBody">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:valueFrom="0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="topStrap">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:startOffset="350"
+                    android:valueFrom="0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="bottomStrap">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:startOffset="350"
+                    android:valueFrom="0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+
+    <target android:name="topStrap">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:startOffset="1200"
+                    android:valueFrom="1.0"
+                    android:valueTo="0.0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="bottomStrap">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:startOffset="1200"
+                    android:valueFrom="1.0"
+                    android:valueTo="0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="strapLock">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleX"
+                    android:startOffset="1200"
+                    android:valueFrom="0.0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="backgroundPath">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="foreground">
+        <aapt:attr name="android:animation">
+            <set>
+
+                <objectAnimator
+                    android:duration="600"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleX"
+
+                    android:valueFrom="0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+
+                <objectAnimator
+                    android:duration="600"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="scaleY"
+                    android:startOffset="150"
+                    android:valueFrom="0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType" />
+
+                <objectAnimator
+                    android:duration="600"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="rotation"
+                    android:startOffset="150"
+                    android:valueFrom="-70.37"
+                    android:valueTo="0.0"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="foregroundPath1">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="600"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="fillAlpha"
+                    android:startOffset="150"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="foregroundPath2">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="600"
+                    android:interpolator="@anim/interpolator_ease_in_out_quart"
+                    android:propertyName="fillAlpha"
+                    android:startOffset="150"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+</animated-vector>

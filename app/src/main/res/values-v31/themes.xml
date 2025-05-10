@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SafeBand.Splash" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.SafeBand</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_animated</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/app_branding</item>
+    </style>
+
+</resources>

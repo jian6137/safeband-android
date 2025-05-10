@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "515439770799",
+    "firebase_url": "https://safeband-6438a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "safeband-6438a",
+    "storage_bucket": "safeband-6438a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515439770799:android:e8aca2b212637a9d6f685a",
+        "android_client_info": {
+          "package_name": "com.inclusitech.safeband"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcz3YUqveo72EOQ-8JEKLjIcTR4iuIGro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
