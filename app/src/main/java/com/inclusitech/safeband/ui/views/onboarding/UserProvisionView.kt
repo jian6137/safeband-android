@@ -200,7 +200,7 @@ fun UserProvisionView(
                                         val formatter =
                                             SimpleDateFormat(
                                                 "MM-dd-yyyy",
-                                                context.resources.configuration.locales[0]
+                                                Locale.getDefault()
                                             )
 
 
@@ -523,6 +523,7 @@ fun UserProvisionView(
                                     .calculateBottomPadding()
                             ),
                         onClick = {
+                            setupVMService.updatePatientID(patientID.toString())
                             navHostController.navigate(SetupRoutes.RegisterGettingStarted.route)
                         },
                     ) {

@@ -1,6 +1,9 @@
 package com.inclusitech.safeband.core.vms
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.nfc.NfcAdapter
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.inclusitech.safeband.core.data.DevicesList
@@ -22,30 +25,40 @@ class MainVMService : ViewModel() {
     val currentRegisteredTag: String
         get() = _currentRegisteredTag
 
-    var isScanning = mutableStateOf(false)
-        private set
+    private val _isScanning = mutableStateOf(false)
+    val isScanning: State<Boolean> get() = _isScanning
 
     val deviceData
         get() = _deviceData
 
-    fun setNfcAdapter(adapter: NfcAdapter?) {
-        _nfcAdapter = adapter
+    fun startScan() {
+        if(_isScanning.value == false) {
+            _isScanning.value = true
+        }
     }
 
-    fun startScan() {
-        isScanning.value = true
+    fun stopScan() { // this can be observable
+        if(_isScanning.value == true) {
+            _isScanning.value = false
+        }
     }
 
     fun loadWristbandUID(uid: String) {
         _currentRegisteredTag = uid
     }
 
-    fun stopScan() {
-        isScanning.value = false
-    }
-
     fun insertDeviceData(data: DevicesList) {
         _deviceData = arrayOf(data)
+    }
+
+    fun saveAccountRole(context: Context, role: String) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("accountInfo", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) { putString("accountRole", role).apply() }
+    }
+
+    fun getAccountRole(context: Context): String? {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("accountInfo", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("accountRole", "")
     }
 
     fun getNFCStatus(): String {

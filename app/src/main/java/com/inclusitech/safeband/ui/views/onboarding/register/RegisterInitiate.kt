@@ -36,6 +36,8 @@ fun RegisterInitiate(navHostController: NavHostController, setupVMService: Setup
     val firebaseAuth = FirebaseAuth.getInstance()
     val coroutineScope = rememberCoroutineScope()
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         setupVMService.createUser(
             onDataFetched = { data ->
@@ -49,14 +51,24 @@ fun RegisterInitiate(navHostController: NavHostController, setupVMService: Setup
                         val token = data.authKey
                         coroutineScope.launch {
                             try {
+                                setupVMService.saveAccountRole(context, data.role)
                                 firebaseAuth.signInWithCustomToken(token).await()
-
                             } catch (e: Exception) {
                                 e.printStackTrace()
                                 navHostController.popBackStack()
                                 navHostController.navigate("${SetupRoutes.ErrorInfoView.route}/Internal Error!/Something went wrong and the system failed to authenticate. Please try again or Contact Us.")
                             }
                         }
+                    }
+
+                    "PATIENT_ID_ALREADY_BOUND" -> {
+                        navHostController.popBackStack()
+                        navHostController.navigate("${SetupRoutes.ErrorInfoView.route}/Record Already Bound!/The Medical Record that you scanned via the QR Code was already bound to another patient. Please contact your doctor if you think this is a mistake.")
+                    }
+
+                    "PATIENT_ID_NOT_FOUND" -> {
+                        navHostController.popBackStack()
+                        navHostController.navigate("${SetupRoutes.ErrorInfoView.route}/Record Not Found!/The Medical Record that you scanned via the QR Code was not found Please contact your doctor if you think this is a mistake.")
                     }
 
                     else -> {

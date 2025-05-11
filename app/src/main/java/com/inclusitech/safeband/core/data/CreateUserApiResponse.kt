@@ -4,12 +4,14 @@ data class CreateUserApiResponse(
     val status: String,
     val authKey: String,
     val uid: String,
-    val email: String
+    val email: String,
+    val role: String
 )
 
 data class CreateUserApiRequest(
     val email: String,
     val password: String,
     val name: String,
-    val accountType: String
+    val accountType: String,
+    val patientID: String
 )

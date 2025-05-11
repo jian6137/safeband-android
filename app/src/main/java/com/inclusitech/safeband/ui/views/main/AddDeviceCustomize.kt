@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ fun AddDeviceCustomize(navHostController: NavHostController, mainVMService: Main
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
+    val context = LocalContext.current
 
     Surface {
         Column(
@@ -61,14 +63,14 @@ fun AddDeviceCustomize(navHostController: NavHostController, mainVMService: Main
             )
             Spacer(modifier = Modifier.height(64.dp))
             Text(
-                text = "Add Yourself",
+                text = if(mainVMService.getAccountRole(context) == "PATIENT") "Add Yourself" else "Setup For Your Patient",
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = "Your current patient information will be saved to your SafeBand wristband",
+                text = if(mainVMService.getAccountRole(context) == "PATIENT") "Your current patient information will be saved to your SafeBand wristband" else "The patient information you selected that is linked with your SafeBand caregiver account will be saved to your target SafeBand wristband",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

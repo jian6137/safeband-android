@@ -1,5 +1,6 @@
 package com.inclusitech.safeband.ui.views.main
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,7 +14,6 @@ import android.nfc.tech.NdefFormatable
 import android.util.Log
 import android.os.Build
 import android.os.Parcelable
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,8 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -58,18 +59,21 @@ fun ConnectDeviceNFC(navHostController: NavHostController, mainVMService: MainVM
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
-    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        mainVMService.startScan()
+    }
+
     if(type == "READ"){
         NfcBroadcastReceiver { tag ->
             mainVMService.loadWristbandUID(tag.id.joinToString("") { "%02x".format(it) })
             navHostController.navigate(MainRoutes.AddDeviceCustomize.route)
+            mainVMService.stopScan()
         }
     } else if(type == "WRITE" && patientUID != null){
         NfcBroadcastReceiver { tag ->
             if(mainVMService.currentRegisteredTag == tag.id.joinToString("") { "%02x".format(it) }.toString()){
-//                val message = createUrlMessage("https://safeband.zaide.online/view/${patientUID}")
-                  val message = createUrlMessage("https://safeband.zaide.online/6137152")
-
+                val message = createUrlMessage("https://safeband.zaide.online/view/${patientUID}")
                 val success = writeNdefMessageToTag(message, tag)
 
                 if (success) {
@@ -80,6 +84,7 @@ fun ConnectDeviceNFC(navHostController: NavHostController, mainVMService: MainVM
             } else {
                 navHostController.navigate("${MainRoutes.GenericErrorView.route}/Error/Failed to write to Wristband NFC. Please make sure that the Wristband you are trying to write is the same Wristband that you read earlier.")
             }
+            mainVMService.stopScan()
         }
     }
 

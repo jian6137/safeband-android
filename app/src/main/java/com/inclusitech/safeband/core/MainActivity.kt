@@ -13,6 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -52,14 +53,11 @@ class MainActivity : ComponentActivity() {
 
         FirebaseApp.initializeApp(this)
         firebaseAuth = FirebaseAuth.getInstance()
-
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-
 
         val user = firebaseAuth.currentUser
         if (user != null) {
             mainVMService = viewModels<MainVMService>().value
-            mainVMService?.setNfcAdapter(nfcAdapter)
             isLoggedIn = true
         } else {
             setupVMService = viewModels<SetupVMService>().value
@@ -73,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
                 if (currentUser != null) {
                     mainVMService = viewModels<MainVMService>().value
-                    mainVMService?.setNfcAdapter(nfcAdapter)
+
                     setupVMService = null
                 } else {
                     mainVMService = null
@@ -85,6 +83,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             SafeBandTheme {
                 if (isLoggedIn) {
+
+                    val isScanning by mainVMService!!.isScanning
+
+                    LaunchedEffect(isScanning) {
+                        Log.d("Main", isScanning.toString())
+                        if (isScanning) {
+                            enableNfcForegroundDispatch()
+                        } else {
+                            disableNfcForegroundDispatch()
+                        }
+                    }
+
                     MainRouter(mainVMService!!)
                 } else {
                     SetupRouter(setupVMService!!)
@@ -102,8 +112,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        enableNfcForegroundDispatch()
-
+        if (mainVMService != null) {
+            if(mainVMService!!.isScanning.value){
+                enableNfcForegroundDispatch()
+            } else {
+                disableNfcForegroundDispatch()
+            }
+        }
     }
 
     override fun onPause() {
@@ -121,15 +136,18 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        intent.let { nfcIntent ->
-            sendBroadcast(Intent(INTENT_ACTION_NFC_READ).apply {
-                Log.d("MAIN", "sendBroadcast")
-                putExtra(
-                    NfcAdapter.EXTRA_TAG,
-                    nfcIntent.getParcelableCompatibility(NfcAdapter.EXTRA_TAG, Tag::class.java)
-                )
-                setPackage(packageName)
-            })
+        if (mainVMService != null) {
+            if(mainVMService!!.isScanning.value){
+                intent.let { nfcIntent ->
+                    sendBroadcast(Intent(INTENT_ACTION_NFC_READ).apply {
+                        putExtra(
+                            NfcAdapter.EXTRA_TAG,
+                            nfcIntent.getParcelableCompatibility(NfcAdapter.EXTRA_TAG, Tag::class.java)
+                        )
+                        setPackage(packageName)
+                    })
+                }
+            }
         }
     }
 
@@ -165,7 +183,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun disableNfcForegroundDispatch() {
-        nfcAdapter?.disableForegroundDispatch(this)
+        try {
+            nfcAdapter?.disableForegroundDispatch(this)
+        } catch (e: IllegalStateException) {
+            Log.w("MainActivity", e.toString())
+        }
     }
 
 }

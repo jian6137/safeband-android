@@ -3,7 +3,7 @@ package com.inclusitech.safeband.core.data
 data class PatientProvisionAPIResponse(
     val status: String,
     val userBound: Boolean,
-    val data: String
+    val data: String,
 )
 
 data class FirestoreTimestamp(

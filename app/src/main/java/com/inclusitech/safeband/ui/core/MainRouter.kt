@@ -1,5 +1,6 @@
 package com.inclusitech.safeband.ui.core
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -9,6 +10,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +28,14 @@ import com.inclusitech.safeband.ui.views.onboarding.ErrorInfo
 @Composable
 fun MainRouter(mainVMService: MainVMService) {
     val navController = rememberNavController()
+
+    LaunchedEffect(navController.currentDestination) {
+        if(navController.currentDestination?.route == MainRoutes.ConnectDeviceNFC.route){
+            mainVMService.startScan()
+        } else {
+            mainVMService.stopScan()
+        }
+    }
 
     NavHost(
         modifier = Modifier.fillMaxSize(),

@@ -17,9 +17,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.inclusitech.safeband.core.data.CreateUserApiRequest
 import com.inclusitech.safeband.core.data.CreateUserApiResponse
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import retrofit2.http.POST
+import android.content.Context
+import android.content.SharedPreferences
 import retrofit2.http.Body
 
 class SetupVMService : ViewModel() {
@@ -41,7 +41,6 @@ class SetupVMService : ViewModel() {
             @Body inputData: CreateUserApiRequest
         ): Response<CreateUserApiResponse>
     }
-
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(APIConfig.BASE_URL)
@@ -68,12 +67,8 @@ class SetupVMService : ViewModel() {
     var patientGender = mutableStateOf("")
         private set
 
-    private val _isLoggedIn = MutableStateFlow(false)
-    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
-
-    companion object {
-        private const val TAG = "MainVMService"
-    }
+    var patientID = mutableStateOf("")
+        private set
 
     fun updateName(newName: String) {
         name.value = newName
@@ -102,6 +97,23 @@ class SetupVMService : ViewModel() {
     fun updateRegisterType(newType: String) {
         registerType.value = newType
     }
+
+    fun updatePatientID(newID: String){
+        patientID.value = newID
+    }
+
+    fun saveAccountRole(context: Context, role: String) {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("accountInfo", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) { putString("accountRole", role).apply() }
+    }
+
+    fun deleteAccountRole(context: Context) {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("accountInfo", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) { remove("accountRole").apply() }
+    }
+
 
     fun fetchUserProvisionData(
         patientID: String,
@@ -147,12 +159,15 @@ class SetupVMService : ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<CreateUserApiResponse> =
-                service.createNewUser(CreateUserApiRequest(
-                    email.value,
-                    password.value,
-                    name.value,
-                    registerType.value
-                ))
+                service.createNewUser(
+                    CreateUserApiRequest(
+                        email.value,
+                        password.value,
+                        name.value,
+                        registerType.value,
+                        patientID.value
+                    )
+                )
             CoroutineScope(Dispatchers.Main).launch {
                 if (response.isSuccessful) {
                     val body = response.body()
