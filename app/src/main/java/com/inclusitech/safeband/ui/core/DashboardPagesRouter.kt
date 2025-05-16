@@ -76,6 +76,7 @@ import com.inclusitech.safeband.R
 import com.inclusitech.safeband.core.HapticsManager
 import com.inclusitech.safeband.core.vms.MainVMService
 import com.inclusitech.safeband.ui.views.main.HomeDashboard
+import java.util.Calendar
 
 data class BottomNavigationItem(
     val title: String,
@@ -287,7 +288,7 @@ fun DashboardPagesRouter(
                     Spacer(modifier = Modifier.height(16.dp))
                     if (selectedItemIndex == 0) {
                         Text(
-                            text = "Good Afternoon, ${FirebaseAuth.getInstance().currentUser?.displayName}!",
+                            text = "${getTimeOfDayGreeting()}, ${FirebaseAuth.getInstance().currentUser?.displayName?.split(" ")?.get(0)}!",
                             style = MaterialTheme.typography.headlineLarge,
                             modifier = Modifier
                                 .padding(start = 16.dp, end = 16.dp)
@@ -578,3 +579,15 @@ fun DashboardPagesRouter(
         }
     }
 }
+
+fun getTimeOfDayGreeting(): String {
+    val calendar = Calendar.getInstance()
+    return when (calendar.get(Calendar.HOUR_OF_DAY)) {
+        in 0..11 -> "Good Morning"
+        in 12..16 -> "Good Afternoon"
+        in 17..20 -> "Good Evening"
+        in 21..23 -> "Good Night"
+        else -> "Hello"
+    }
+}
+
