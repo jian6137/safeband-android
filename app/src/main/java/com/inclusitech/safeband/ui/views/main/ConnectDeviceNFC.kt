@@ -73,7 +73,8 @@ fun ConnectDeviceNFC(navHostController: NavHostController, mainVMService: MainVM
     } else if(type == "WRITE" && patientUID != null){
         NfcBroadcastReceiver { tag ->
             if(mainVMService.currentRegisteredTag == tag.id.joinToString("") { "%02x".format(it) }.toString()){
-                val message = createUrlMessage("https://safeband.zaide.online/view/${patientUID}")
+//                val message = createUrlMessage("https://safeband.zaide.online/view/${patientUID}")
+                val message = createUrlMessage("https://www.safeband.online/en/6137152")
                 val success = writeNdefMessageToTag(message, tag)
 
                 if (success) {

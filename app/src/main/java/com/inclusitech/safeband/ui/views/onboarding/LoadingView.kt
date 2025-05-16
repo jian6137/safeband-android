@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoadingView(navHostController: NavHostController, setupVMService: SetupVMService) {
 
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.phone_loading_anim))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_anim))
     val progress by animateLottieCompositionAsState(
         composition,
         iterations = LottieConstants.IterateForever

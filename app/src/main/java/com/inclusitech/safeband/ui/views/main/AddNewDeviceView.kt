@@ -49,6 +49,7 @@ import androidx.navigation.NavHostController
 import com.inclusitech.safeband.R
 import com.inclusitech.safeband.core.vms.MainVMService
 import com.inclusitech.safeband.ui.core.MainRoutes
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -77,7 +78,7 @@ fun AddNewDeviceView(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "To know what type of SafeBand Device you have, please refer to the product's manual or visit https://safeband.zaide.online/products/identify.",
+                    text = "To know what type of SafeBand Device you have, please refer to the product's manual or visit https://products.safeband.online/identify.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -95,8 +96,9 @@ fun AddNewDeviceView(
 
                     ) {
                     val items = listOf(
-                        ("SafeBand v1" to "Basic Smart Wristband with Smart Tagging") to ("sb-v1" to "p1"),
-                        ("SafeBand Pro \n(Coming Soon)" to "Advanced Smart Wristband with Smart Tagging, Tracking (Via BLE) and Geofencing") to ("sb-pro" to "p2")
+                        ("SafeBand Touch" to "Basic Smart Wristband with NFC Smart Tagging") to ("sb-touch" to R.drawable.safeband_touch),
+                        ("SafeBand Track (New)" to "Advanced Smart Wristband with NFC Smart Tagging, Tracking (Via BLE)") to ("sb-track" to R.drawable.safeband_track),
+                        ("SafeBand Sense (Coming Soon)" to "Advanced Smart Wristband with an AI Powered Hard Fall Detection Emergency Services") to ("sb-sense" to R.drawable.safeband_sense)
                     )
 
                     items.forEachIndexed { index, (productInfo, metadata) ->
@@ -108,7 +110,7 @@ fun AddNewDeviceView(
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceVariant
                             ),
-                            enabled = index != 1,
+                            enabled = index != 2,
                             onClick = {
                                 selectedItem = if (selectedItem != index) index else -1
                             }
@@ -120,13 +122,14 @@ fun AddNewDeviceView(
                             ) {
                                 Column {
                                     Image(
-                                        painter = painterResource(if (metadata.first == "sb-v1") R.drawable.safeband_v1 else R.drawable.safeband_pro),
+                                        painter = painterResource(metadata.second),
                                         contentDescription = productInfo.first,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .aspectRatio(1f)
-                                            .clip(RoundedCornerShape(12.dp)),
-                                        contentScale = ContentScale.Crop
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(Color.White),
+                                        contentScale = ContentScale.Inside
                                     )
                                     Text(
                                         text = productInfo.first,
@@ -169,7 +172,7 @@ fun AddNewDeviceView(
                                             onCheckedChange = {
                                                 selectedItem = if (it) index else -1
                                             },
-                                            enabled = index != 1
+                                            enabled = index != 2
                                         )
                                     }
                                 }

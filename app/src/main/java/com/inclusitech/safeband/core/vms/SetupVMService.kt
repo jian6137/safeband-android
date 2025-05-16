@@ -27,7 +27,7 @@ class SetupVMService : ViewModel() {
     private val _userProvision = MutableLiveData<PatientProvisionAPIResponse?>(null)
     val userProvision: LiveData<PatientProvisionAPIResponse?> get() = _userProvision
 
-    private interface ApiService {
+    private interface GetPatientInfoApi {
         @GET(APIConfig.USER_PROVISION_URL)
         suspend fun getPatientData(
             @Query("patientUID") patientID: String,
@@ -121,7 +121,7 @@ class SetupVMService : ViewModel() {
         onDataFetched: (PatientProvisionAPIResponse) -> Unit,
         onError: (Exception) -> Unit
     ) {
-        val service = retrofit.create(ApiService::class.java)
+        val service = retrofit.create(GetPatientInfoApi::class.java)
 
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<PatientProvisionAPIResponse> =

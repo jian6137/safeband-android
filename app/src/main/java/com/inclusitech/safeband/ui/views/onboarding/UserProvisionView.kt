@@ -578,21 +578,11 @@ fun parseCustomUserData(
             }
 
             "dateOfBirth" -> {
-                val timestamp =
-                    Gson().fromJson(jsonObject.getString(key), FirestoreTimestamp::class.java)
-                val date = Date(timestamp._seconds * 1000)
-                val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-
-                result[key] = formatter.format(date)
+                result[key] = jsonObject.getString(key).replace('-', '/')
             }
 
             "dateOfDiagnosis" -> {
-                val timestamp =
-                    Gson().fromJson(jsonObject.getString(key), FirestoreTimestamp::class.java)
-                val date = Date(timestamp._seconds * 1000)
-                val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-
-                result[key] = formatter.format(date)
+                result[key] = jsonObject.getString(key).replace('-', '/')
             }
 
             "gender" -> {

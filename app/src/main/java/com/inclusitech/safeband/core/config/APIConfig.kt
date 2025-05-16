@@ -9,6 +9,7 @@ class APIConfig {
         const val SIGNUP_URL = "api/v1/auth/signup"
         const val LOGIN_URL = "api/v1/auth/login"
         const val USER_PROVISION_URL = "api/v1/getPatientProvision"
+        const val GET_LINKED_PATIENTS = "api/v1/user/getLinkedPatientLists"
 
     }
 

@@ -1,5 +1,6 @@
 package com.inclusitech.safeband.ui.views.main
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,17 +13,23 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -34,13 +41,40 @@ import com.inclusitech.safeband.core.vms.MainVMService
 import com.inclusitech.safeband.ui.core.MainRoutes
 
 @Composable
-fun ConnectDevicePicker(navHostController: NavHostController, mainVMService: MainVMService) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.connection_anim))
+fun ConnectDeviceNFCCheck(
+    navHostController: NavHostController,
+    mainVMService: MainVMService
+) {
+    val context = LocalContext.current
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.switch_anim))
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
-    val context = LocalContext.current
+
+    val checkComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.check_anim))
+    val checkProgress by animateLottieCompositionAsState(
+        composition = checkComposition,
+        iterations = LottieConstants.IterateForever
+    )
+
+    var isNFCEnabled by remember { mutableStateOf(false) }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                if (mainVMService.getNFCStatus(context) == "NFC_ENABLED") {
+                    isNFCEnabled = true
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     Surface {
         Column(
@@ -55,22 +89,22 @@ fun ConnectDevicePicker(navHostController: NavHostController, mainVMService: Mai
                     .height(124.dp)
             )
             LottieAnimation(
-                composition = composition,
+                composition = if(isNFCEnabled) checkComposition else composition,
                 progress = {
-                    progress
+                    if(isNFCEnabled) checkProgress else progress
                 },
                 modifier = Modifier.size(200.dp)
             )
             Spacer(modifier = Modifier.height(64.dp))
             Text(
-                text = "Connect to Wristband",
+                text = if (isNFCEnabled) "NFC Enabled" else "NFC is Disabled",
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = if(mainVMService.getNFCStatus(context) == "NO_SUPPORT") "Your Device Only Supports Bluetooth. Choose a way to communicate with your SafeBand wristband device." else "Your Device Supports Both NFC and Bluetooth. Choose a way to communicate with your SafeBand wristband device.",
+                text = if (isNFCEnabled) "Your device's NFC is now enabled." else "Your device's NFC is disabled. Please enable NFC to continue connecting with SafeBand.",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -83,16 +117,16 @@ fun ConnectDevicePicker(navHostController: NavHostController, mainVMService: Mai
                     .wrapContentHeight()
                     .padding(start = 24.dp, end = 24.dp)
             ) {
-                if(mainVMService.getNFCStatus(context) == "NO_SUPPORT"){
+                if (isNFCEnabled) {
                     Button(
                         modifier = Modifier
                             .wrapContentHeight()
                             .fillMaxWidth(),
                         onClick = {
-                            navHostController.navigate("${MainRoutes.ConnectDeviceBluetooth.route}/READ/0")
+                            navHostController.navigate("${MainRoutes.ConnectDeviceNFC.route}/READ/0")
                         },
                     ) {
-                        Text("Bluetooth")
+                        Text("Continue")
                     }
                 } else {
                     Button(
@@ -100,24 +134,11 @@ fun ConnectDevicePicker(navHostController: NavHostController, mainVMService: Mai
                             .wrapContentHeight()
                             .fillMaxWidth(),
                         onClick = {
-                            if(mainVMService.getNFCStatus(context) == "NFC_DISABLED"){
-                                navHostController.navigate(MainRoutes.NFCDisabled.route)
-                            } else {
-                                navHostController.navigate("${MainRoutes.ConnectDeviceNFC.route}/READ/0")
-                            }
+                            val intent = Intent(android.provider.Settings.ACTION_NFC_SETTINGS)
+                            context.startActivity(intent)
                         },
                     ) {
-                        Text("NFC")
-                    }
-                    OutlinedButton(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .fillMaxWidth(),
-                        onClick = {
-                            navHostController.navigate("${MainRoutes.ConnectDeviceBluetooth.route}/READ/0")
-                        },
-                    ) {
-                        Text("Bluetooth")
+                        Text("Enable")
                     }
                 }
             }

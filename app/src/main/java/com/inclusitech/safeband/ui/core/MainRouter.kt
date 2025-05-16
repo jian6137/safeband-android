@@ -1,6 +1,5 @@
 package com.inclusitech.safeband.ui.core
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -21,6 +20,7 @@ import com.inclusitech.safeband.ui.views.main.AddDeviceIntro
 import com.inclusitech.safeband.ui.views.main.AddNewDeviceView
 import com.inclusitech.safeband.ui.views.main.ConnectDeviceBT
 import com.inclusitech.safeband.ui.views.main.ConnectDeviceNFC
+import com.inclusitech.safeband.ui.views.main.ConnectDeviceNFCCheck
 import com.inclusitech.safeband.ui.views.main.ConnectDevicePicker
 import com.inclusitech.safeband.ui.views.main.DeviceAddComplete
 import com.inclusitech.safeband.ui.views.onboarding.ErrorInfo
@@ -522,6 +522,59 @@ fun MainRouter(mainVMService: MainVMService) {
             }
         ) {
             DeviceAddComplete(
+                navHostController = navController,
+                mainVMService = mainVMService
+            )
+        }
+
+        composable(
+            route = MainRoutes.NFCDisabled.route,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(
+                        durationMillis = 350,
+                        easing = FastOutSlowInEasing
+                    ),
+                )
+            },
+            exitTransition = {
+                scaleOut(
+                    targetScale = 0.9f, animationSpec = tween(
+                        durationMillis = 350,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(
+                        durationMillis = 350,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            },
+            popEnterTransition = {
+                scaleIn(
+                    initialScale = 0.9f, animationSpec = tween(
+                        durationMillis = 350,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(
+                        durationMillis = 350,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(
+                        durationMillis = 350,
+                        easing = FastOutSlowInEasing
+                    ),
+                )
+            }
+        ) {
+            ConnectDeviceNFCCheck(
                 navHostController = navController,
                 mainVMService = mainVMService
             )

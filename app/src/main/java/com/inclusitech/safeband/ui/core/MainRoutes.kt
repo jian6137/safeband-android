@@ -9,6 +9,7 @@ sealed class MainRoutes(val route: String) {
     data object ConnectDeviceBluetooth: MainRoutes("add-device-bt")
     data object ConnectDevicePicker: MainRoutes("add-device-picker")
     data object DeviceAddComplete: MainRoutes("add-device-complete")
+    data object NFCDisabled: MainRoutes("nfc-disabled")
 
     data object GenericErrorView: MainRoutes("error")
 
